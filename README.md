@@ -23,28 +23,24 @@ either nil out the source\_url attributes or set them to the url you wish to dow
 
 Please include the default recipe before using any other recipe.
 
-Installing the Agent :
-
-    "recipe[zabbix]"
-
 Installing the Server :
 
-    "recipe[zabbix]",  
-    "recipe[zabbix::server]"
+    "recipe[zabbix-server]"
 
 Installing the Database :
 
     "recipe[mysql::server]",
-    "recipe[zabbix]",
-    "recipe[zabbix::database]"
+    "recipe[zabbix-server]",
+    "recipe[zabbix-server::database]",
+    "recipe[zabbix-web]"
 
 Installing all 3 - Database MUST come before Server
 
     "recipe[database::mysql]",
     "recipe[mysql::server]",
-    "recipe[zabbix]",
-    "recipe[zabbix::database]",
-    "recipe[zabbix::server]"
+    "recipe[zabbix-server]",
+    "recipe[zabbix-server::database]",
+    "recipe[zabbix-web]"
 
 NOTE:
 
@@ -56,9 +52,6 @@ Include "recipe[yum::epel]" in your runlist or satisfy these requirements some o
 # ATTRIBUTES
 
 Don't forget to set :
-
-    node.set['zabbix']['agent']['servers'] = ["Your_zabbix_server.com","secondaryserver.com"]
-    node.set['zabbix']['web']['fqdn'] or you will not have the zabbix web interface
 
 Note :
 
@@ -76,13 +69,6 @@ example :
 	  node.set['zabbix']['server']['source_url'] = nil
 	  ndoe.set['zabbix']['server']['install_method'] = "source"
 
-## Agent
-
-	  node.set['zabbix']['agent']['branch'] = "ZABBIX%20Latest%20Stable"
-	  node.set['zabbix']['agent']['version'] = "2.0.0"
-	  node.set['zabbix']['agent']['source_url'] = nil
-	  node.set['zabbix']['agent']['install_method'] = "prebuild"
-
 ## Database
 
     node.set['zabbix']['database']['install_method'] = 'mysql'
@@ -98,49 +84,11 @@ If you are using AWS RDS
     node.set['zabbix']['database']['rds_master_user'] = 'username'
     node.set['zabbix']['database']['rds_master_password'] = 'password'
 
-
-
 # RECIPES
 
 ## default
 
 The default recipe creates the Zabbix user and directories used by all Zabbix components.
-
-Optionally, it installs the Zabbix agent.
-
-You can control the agent install with the following attributes:
-
-    node['zabbix']['agent']['install'] = true
-    node['zabbix']['agent']['install_method'] = 'source'
-
-## agent\_prebuild
-
-Downloads and installs the Zabbix agent from a pre built package
-
-If you are on a machine in the RHEL family of platforms, then you must have your
-package manager setup to allow installation of:
-
-    package "redhat-lsb"
-
-You can control the agent version with:
-
-    node['zabbix']['agent']['version']
-
-## agent\_source
-
-Downloads and installs the Zabbix agent from source
-
-If you are on a machine in the RHEL family of platforms, then you will
-need to install packages from the EPEL repository. The easiest way to do this
-is to add the following recipe to your runlist before zabbix::agent\_source
-
-    recipe "yum::epel"
-
-You can control the agent install with:
-
-    node['zabbix']['agent']['branch']
-    node['zabbix']['agent']['version']
-    node['zabbix']['agent']['configure_options']
 
 ## database
 
@@ -228,10 +176,6 @@ The server also needs to know about:
     node['zabbix']['database']['dbuser']
     node['zabbix']['database']['dbpassword']
     node['zabbix']['database']['dbport']
-
-## web
-
-Creates an Apache site for the Zabbix Web component
 
 # LWRPs
 
@@ -321,8 +265,7 @@ Default implementation of how to Fetch and handle the Zabbix source code.
 
 # TODO
 
-* Support more platform on agent side windows ?
-* LWRP Magic ?
+* refactor and make functional
 
 # CHANGELOG
 

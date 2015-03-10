@@ -1,4 +1,4 @@
-include_recipe 'zabbix::common'
+include_recipe 'zabbix-server::common'
 
 ::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
 

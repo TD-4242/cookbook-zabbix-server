@@ -7,8 +7,8 @@
 # Apache 2.0
 #
 
-include_recipe 'zabbix::common'
-include_recipe 'zabbix::server_common'
+include_recipe 'zabbix-server::common'
+include_recipe 'zabbix-server::server_common'
 
 packages = []
 case node['platform']
@@ -93,7 +93,7 @@ when 'oracle'
   configure_options << with_oracle_include unless configure_options.include?(with_oracle_include)
 end
 
-configure_options << "--with-libxml2"
+configure_options << '--with-libxml2'
 
 if node['zabbix']['server']['java_gateway_enable'] == true
   include_recipe 'java' # install a JDK if not present
@@ -152,5 +152,5 @@ end
 
 # Configure the Java Gateway
 if node['zabbix']['server']['java_gateway_enable'] == true
-  include_recipe 'zabbix::java_gateway'
+  include_recipe 'zabbix-server::java_gateway'
 end
