@@ -93,6 +93,8 @@ when 'oracle'
   configure_options << with_oracle_include unless configure_options.include?(with_oracle_include)
 end
 
+configure_options << "--with-libxml2"
+
 if node['zabbix']['server']['java_gateway_enable'] == true
   include_recipe 'java' # install a JDK if not present
   configure_options << '--enable-java' unless configure_options.include?('--enable-java')

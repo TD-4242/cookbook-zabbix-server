@@ -6,10 +6,7 @@ driver_config:
   require_chef_omnibus: true
 
 platforms:
-- name: ubuntu-10.04
-- name: ubuntu-12.04
-- name: centos-6.4
-- name: centos-5.9
+- name: ubuntu-14.04
 
 provisioner:
     name: chef_zero
@@ -17,5 +14,5 @@ provisioner:
 suites:
 - name: default
   run_list:
-    - "recipe[zabbix::default]"
+    - "recipe[zabbix-server]"
   attributes:
